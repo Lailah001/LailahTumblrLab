@@ -9,12 +9,19 @@
 import UIKit
 
 class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet var photosTableView: UITableView!
+    
+    var posts = [[String: Any]]()
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.posts.compt
+        return self.posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as!  PhotoCell
         
+        let post = posts[indexPath.row]
+        return cell
     }
     
 
@@ -22,7 +29,7 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         
         self.photosTableView.delegate = self
-        self.photosTableView.datasource = self
+        self.photosTableView.dataSource = self
         
         
         // Network request snippet
@@ -37,7 +44,7 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 print(dataDictionary)
                 
                 // Get the posts and store in posts property
-                let response = dataDictionary["response"] as! [[String: Any]]
+                let response = dataDictionary["response"] as! [String: Any]
                 let posts = response["posts"] as! [[String: Any]]
                 self.posts = posts
                 
